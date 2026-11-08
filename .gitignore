@@ -1,0 +1,17 @@
+# Python environment
+venv/
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# Dataset - download separately from Kaggle
+data/
+
+# OS files
+.DS_Store
+Thumbs.db
