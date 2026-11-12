@@ -2,62 +2,61 @@
 
 ## 1. Project Overview
 
-Credit card fraud is a major problem in the financial industry. Detecting fraudulent transactions accurately is challenging because fraudulent transactions represent only a very small percentage of all transactions.
+Credit card fraud is a common challenge in the financial industry. One of the main difficulties in detecting it is that fraudulent transactions make up only a very small portion of all transactions.
 
-This project uses Machine Learning techniques to identify potentially fraudulent credit card transactions.
+In this project, I built a machine learning model to classify credit card transactions as genuine or fraudulent using transaction data.
 
-Two classification algorithms, Logistic Regression and Random Forest, are implemented and evaluated. Their performance is compared using multiple evaluation metrics to identify the better-performing model.
-
-The project also explores class imbalance handling, feature scaling, SMOTE, and classification threshold tuning.
+I experimented with two classification algorithms: **Logistic Regression** and **Random Forest**. I compared their performance and explored techniques such as feature scaling, SMOTE, and classification threshold tuning to understand how they affect fraud detection.
 
 ## 2. Project Objectives
 
-- Analyze credit card transaction data.
-- Understand the problem of imbalanced datasets.
-- Perform exploratory data analysis (EDA).
-- Preprocess the dataset for machine learning.
+The main goals of this project were to:
+
+- Explore and understand the credit card transaction dataset.
+- Identify patterns in genuine and fraudulent transactions.
+- Perform data cleaning and exploratory data analysis.
+- Prepare the data for machine learning.
 - Handle class imbalance using SMOTE.
-- Train Logistic Regression and Random Forest models.
-- Evaluate models using appropriate classification metrics.
-- Tune the classification threshold to improve fraud detection performance.
-- Compare the models and visualize their results.
+- Train and compare Logistic Regression and Random Forest.
+- Evaluate model performance using suitable classification metrics.
+- Experiment with classification thresholds to improve prediction results.
+- Visualize and analyze the model results.
 
 ## 3. Dataset
 
 **Dataset:** Credit Card Fraud Detection
 
-**Source:** [Kaggle - Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+**Source:** [Kaggle – Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
 
-The dataset contains transactions made by European cardholders in September 2013.
+The dataset contains credit card transactions made by European cardholders in September 2013.
 
 | Attribute | Description |
 |---|---|
 | Time | Seconds elapsed between each transaction and the first transaction |
 | V1–V28 | Anonymized features obtained through PCA transformation |
 | Amount | Transaction amount |
-| Class | Target variable indicating genuine or fraudulent transactions |
+| Class | Indicates whether a transaction is genuine or fraudulent |
 
 **Target variable:**
 - `0` – Genuine transaction
 - `1` – Fraudulent transaction
 
 **Dataset details after removing duplicate records:**
+
 - Total transactions: 283,726
 - Genuine transactions: 283,253
 - Fraudulent transactions: 473
 - Total features: 30
 
-The dataset is highly imbalanced, with fraudulent transactions representing approximately 0.17% of the cleaned dataset.
+One thing that stood out during the analysis was the class imbalance. Fraudulent transactions represented only around **0.17%** of the cleaned dataset, making this an interesting classification problem.
 
 The dataset is not included in this repository. Download it from Kaggle and place `creditcard.csv` inside `data/archive/`.
 
 ## 4. Technologies Used
 
 - Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
+- Pandas and NumPy
+- Matplotlib and Seaborn
 - Scikit-learn
 - Imbalanced-learn
 - Jupyter Notebook
@@ -92,37 +91,48 @@ Credit-Card-Fraud-Detection/
 
 ### Step 1: Exploratory Data Analysis
 
-- Loaded and inspected the dataset.
+I started by loading the dataset and checking its structure and quality.
+
+During this stage, I:
+
 - Checked for missing values and duplicate records.
 - Analyzed the distribution of genuine and fraudulent transactions.
-- Examined transaction amounts and feature correlations.
-- Visualized important patterns in the dataset.
+- Examined transaction amounts and feature distributions.
+- Explored correlations between features.
+- Created visualizations to understand the dataset.
+
+This helped me understand how imbalanced the data was before moving on to model development.
 
 ### Step 2: Data Preprocessing
 
-- Removed duplicate records.
-- Separated input features and the target variable.
-- Split the dataset into training and testing sets using stratified sampling.
-- Applied StandardScaler to the `Time` and `Amount` features.
-- Used SMOTE (Synthetic Minority Over-sampling Technique) to handle class imbalance.
+Before training the models, I prepared the dataset by:
+
+- Removing duplicate records.
+- Separating input features and the target variable.
+- Splitting the data into training and testing sets using stratified sampling.
+- Applying `StandardScaler` to the `Time` and `Amount` features.
+- Using SMOTE to handle the imbalance between genuine and fraudulent transactions.
 
 The dataset was split into:
+
 - Training set: 80%
 - Testing set: 20%
 
-SMOTE was applied only to the training data to avoid data leakage. The test dataset retained its original class distribution.
+An important part of this process was applying SMOTE **only to the training data**. The test set was kept unchanged so that the final evaluation would reflect the original class distribution.
 
 ### Step 3: Model Training
 
-Two machine learning algorithms were implemented.
+I trained two classification models to compare their performance.
 
 **1. Logistic Regression**
 
-Logistic Regression was used as a baseline classification algorithm to predict whether a transaction is genuine or fraudulent.
+I used Logistic Regression as the baseline model. It helped establish an initial performance result and showed how a basic classification algorithm handles an imbalanced dataset.
 
 **2. Random Forest Classifier**
 
-Random Forest uses multiple decision trees to make predictions. It was trained with the following parameters:
+I also trained a Random Forest model, which combines predictions from multiple decision trees.
+
+The model was configured with the following parameters:
 
 - Number of estimators: 100
 - Maximum depth: 12
@@ -131,26 +141,31 @@ Random Forest uses multiple decision trees to make predictions. It was trained w
 
 ### Step 4: Feature Importance Analysis
 
-Random Forest feature importance was analyzed to identify which features contributed most to the model's predictions.
+After training the Random Forest model, I examined its feature importance scores to understand which input features contributed most to its predictions.
 
-Some of the important features included:
+Some of the important features were:
+
 - V14
 - V10
 - V12
 - V17
 - V4
 
+This gave me a better understanding of which features the model relied on most during classification.
+
 ### Step 5: Classification Threshold Tuning
 
-The default classification threshold of 0.5 was not assumed to be optimal.
+Initially, I used the default classification threshold of 0.5. However, I wanted to check whether changing the threshold could improve the model's performance.
 
-A separate validation dataset was used to evaluate different thresholds. The threshold of 0.6 was selected based on the best F1-score among the tested values.
+I tested different thresholds using a separate validation dataset and selected **0.6** based on the highest F1-score among the values tested.
 
-The selected threshold was then used for the final Random Forest evaluation on the untouched test dataset.
+I then used this threshold for the final Random Forest evaluation on the untouched test dataset.
 
 ### Step 6: Model Evaluation
 
-The models were evaluated using:
+I evaluated both models using multiple metrics rather than relying only on accuracy.
+
+The metrics included:
 
 - Accuracy
 - Precision
@@ -159,9 +174,11 @@ The models were evaluated using:
 - ROC-AUC
 - Precision-Recall AUC (Average Precision)
 
+These metrics helped me understand how well the models detected fraudulent transactions and how many genuine transactions they incorrectly flagged.
+
 ## 7. Model Performance Comparison
 
-The following table compares the performance of Logistic Regression and Random Forest.
+After training both models, I compared their results on the test dataset.
 
 | Evaluation Metric | Logistic Regression | Random Forest |
 |---|---:|---:|
@@ -172,18 +189,20 @@ The following table compares the performance of Logistic Regression and Random F
 | ROC-AUC | 96.19% | 97.89% |
 | PR-AUC | 67.69% | 79.54% |
 
-**Note:** Logistic Regression was evaluated at a classification threshold of 0.5, whereas Random Forest was evaluated using the tuned threshold of 0.6. Therefore, the classification metrics are not a strictly like-for-like threshold comparison.
+**A note about the comparison:** Logistic Regression was evaluated at the default threshold of 0.5, while Random Forest used the tuned threshold of 0.6. So, the classification metrics are not a direct comparison at the same threshold.
 
-### Observations
+### What I observed
 
-- Logistic Regression achieved higher fraud recall but produced many false positives.
-- Random Forest achieved considerably better precision and F1-score.
-- Random Forest also achieved higher ROC-AUC and PR-AUC.
-- Random Forest provided a better overall balance between detecting fraud and reducing false alarms in this experiment.
+- Logistic Regression detected more fraudulent transactions, but it also produced a large number of false alarms.
+- Random Forest achieved much better precision and F1-score.
+- Random Forest also performed better in ROC-AUC and PR-AUC.
+- In this experiment, Random Forest provided a better balance between detecting fraud and avoiding unnecessary alerts.
 
 ## 8. Final Random Forest Evaluation
 
-The final Random Forest model was evaluated on the original, imbalanced test dataset using the selected threshold of 0.6.
+I selected Random Forest as the final model based on its overall performance in this experiment.
+
+The model was evaluated on the original, imbalanced test dataset using the selected threshold of 0.6.
 
 | Metric | Final Result |
 |---|---:|
@@ -201,25 +220,28 @@ The final Random Forest model was evaluated on the original, imbalanced test dat
 | Actual Genuine | 56,629 | 22 |
 | Actual Fraud | 22 | 73 |
 
-**Interpretation:**
-- 56,629 genuine transactions were correctly identified.
-- 22 genuine transactions were incorrectly flagged as fraudulent.
-- 73 fraudulent transactions were correctly detected.
-- 22 fraudulent transactions were missed.
+### Understanding the results
 
-The model successfully detected 73 out of 95 fraudulent transactions in the test dataset.
+- **56,629** genuine transactions were correctly classified.
+- **22** genuine transactions were incorrectly flagged as fraudulent.
+- **73** fraudulent transactions were correctly detected.
+- **22** fraudulent transactions were missed by the model.
+
+Out of the 95 fraudulent transactions in the test dataset, the model correctly identified 73.
 
 ## 9. Model Evaluation Visualizations
 
+I created the following visualizations to make it easier to understand and compare the model results.
+
 ### 9.1 Confusion Matrix
 
-The confusion matrix shows the number of correctly and incorrectly classified genuine and fraudulent transactions.
+The confusion matrix gives a breakdown of correct and incorrect predictions for both classes.
 
 ![Confusion Matrix](reports/figures/confusion_matrix.png)
 
 ### 9.2 ROC Curve
 
-The ROC curve illustrates the relationship between the True Positive Rate and False Positive Rate at different classification thresholds.
+The ROC curve shows how the true positive rate and false positive rate change across different classification thresholds.
 
 **ROC-AUC: 0.9789**
 
@@ -227,7 +249,7 @@ The ROC curve illustrates the relationship between the True Positive Rate and Fa
 
 ### 9.3 Precision-Recall Curve
 
-The Precision-Recall curve shows the trade-off between precision and recall at different classification thresholds. It is particularly useful for evaluating models on highly imbalanced datasets.
+This curve shows the relationship between precision and recall at different thresholds. It is particularly useful for evaluating a dataset where fraudulent transactions are rare.
 
 **Average Precision: 0.7954**
 
@@ -235,37 +257,40 @@ The Precision-Recall curve shows the trade-off between precision and recall at d
 
 ### 9.4 Model Comparison
 
-This visualization compares Logistic Regression and Random Forest across six evaluation metrics.
+This chart compares Logistic Regression and Random Forest across the six evaluation metrics used in this project.
 
 ![Model Comparison](reports/figures/model_comparison.png)
 
 ## 10. Key Learnings
 
-Through this project, I learned:
+While working on this project, I gained practical experience with:
 
-- Exploratory Data Analysis and data visualization.
-- Data cleaning and preprocessing.
-- Handling imbalanced datasets using SMOTE.
-- Training classification models using Scikit-learn.
-- Understanding Logistic Regression and Random Forest.
-- Evaluating classification models using precision, recall, F1-score, ROC-AUC, and PR-AUC.
-- Feature importance analysis.
-- Classification threshold tuning.
-- Avoiding data leakage during model training and evaluation.
-- Maintaining and documenting a machine learning project using GitHub.
+- Exploring and understanding a real-world dataset.
+- Cleaning data and preparing it for machine learning.
+- Handling highly imbalanced datasets using SMOTE.
+- Training classification models with Scikit-learn.
+- Understanding the differences between Logistic Regression and Random Forest.
+- Evaluating models using precision, recall, F1-score, ROC-AUC, and PR-AUC.
+- Analyzing feature importance.
+- Tuning classification thresholds.
+- Avoiding data leakage during preprocessing and model training.
+- Documenting and managing a machine learning project using Git and GitHub.
 
 ## 11. Conclusion
 
-This project demonstrates how machine learning can be applied to credit card fraud detection.
+This project gave me an opportunity to work on a real-world classification problem where accuracy alone is not enough to judge a model's performance.
 
-Both Logistic Regression and Random Forest were implemented and evaluated. Based on the experimental results, Random Forest achieved better overall performance, with a final F1-score of 76.84% and ROC-AUC of 97.89%.
+I implemented and compared Logistic Regression and Random Forest, and experimented with SMOTE and threshold tuning to improve fraud detection.
 
-The project also highlights the importance of handling imbalanced datasets, selecting suitable evaluation metrics, and tuning classification thresholds.
+In my experiments, Random Forest achieved the better overall balance, with an F1-score of **76.84%** and ROC-AUC of **97.89%** on the test dataset.
 
-**Future Improvements:**
-- Experiment with additional machine learning algorithms.
+There is still room to improve the model, especially in detecting more fraudulent transactions while keeping false alarms under control.
+
+### Future Improvements
+
+- Experiment with additional classification algorithms.
 - Perform hyperparameter tuning.
-- Explore additional techniques for handling class imbalance.
+- Explore other techniques for handling class imbalance.
 - Improve fraud detection recall while controlling false positives.
 
 ---
